@@ -1,0 +1,12 @@
+Hardware : 
+ESP32-S3 MODULE WROOM-1-N16R8 
+GPS Module GY-NEO6MV2
+SIM800L GSM/GPRS Module with Micro-SIM Card
+16×2 I2C LCD display 
+Push button 
+MPU6050 GY-521 3-Axis Accelerometer and Gyroscope
+RGB LED (GREEN , Blue , Red ) 
+Rechargeable 18650 Li-ion Battery (3350mAh)
+MT3608 DC-DC Boost Converter Module (2A)
+LM2596S Adjustable DC-DC Buck Converter Module
+Solderless Breadboard
