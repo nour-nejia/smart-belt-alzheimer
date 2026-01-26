@@ -11,10 +11,14 @@ from sklearn.metrics import classification_report, accuracy_score
 import emlearn
 import os
 
-FOLDER_PATH = r"C:\Users\yassi\OneDrive\Bureau\ASAP"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_PATH = os.environ.get("DATA_PATH", os.path.join(BASE_DIR, "dataset_merged.parquet"))
+OUTPUT_DIR = os.environ.get("OUTPUT_DIR", BASE_DIR)
 
 print("📂 Chargement...")
-df = pd.read_parquet(os.path.join(FOLDER_PATH, "dataset_merged.parquet"))
+if not os.path.exists(DATA_PATH):
+    raise FileNotFoundError(f"Dataset not found: {DATA_PATH}")
+df = pd.read_parquet(DATA_PATH)
 print(f"✅ {len(df):,} lignes")
 
 # =============================================================
@@ -78,14 +82,14 @@ print(classification_report(y_test, y_pred, target_names=['Idle', 'Walking', 'Fa
 print("\n🔄 Conversion en C...")
 
 cmodel = emlearn.convert(model, method='inline')
-cmodel.save(file=os.path.join(FOLDER_PATH, "fall_detection_model.h"), name='fall_model')
+cmodel.save(file=os.path.join(OUTPUT_DIR, "fall_detection_model.h"), name='fall_model')
 
 # =============================================================
 # 💾 NOUVEAU SCALER
 # =============================================================
 print("💾 Génération scaler...")
 
-with open(os.path.join(FOLDER_PATH, "scaler_config.h"), "w") as f:
+with open(os.path.join(OUTPUT_DIR, "scaler_config.h"), "w") as f:
     f.write("#ifndef SCALER_CONFIG_H\n")
     f.write("#define SCALER_CONFIG_H\n\n")
     f.write(f"#define NUM_FEATURES {len(features)}\n\n")

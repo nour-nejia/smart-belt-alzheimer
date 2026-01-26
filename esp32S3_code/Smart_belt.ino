@@ -12,9 +12,17 @@
 // ============================================================
 
 // ==================== BLYNK CONFIG (DOIT ÊTRE EN PREMIER) ====================
-#define BLYNK_TEMPLATE_ID "TMPL2PQ7NOY2O"
-#define BLYNK_TEMPLATE_NAME "GPS Project"
-#define BLYNK_AUTH_TOKEN "9WCxtGUQTSUm9ZmqxylnXGSjbW1Bmbgq"
+#if __has_include("secrets.h")
+#include "secrets.h"
+#else
+// Fallback placeholders. Create esp32S3_code/secrets.h to override.
+#define BLYNK_TEMPLATE_ID "YOUR_TEMPLATE_ID"
+#define BLYNK_TEMPLATE_NAME "YOUR_TEMPLATE_NAME"
+#define BLYNK_AUTH_TOKEN "YOUR_BLYNK_AUTH_TOKEN"
+#define WIFI_SSID "YOUR_WIFI_SSID"
+#define WIFI_PASS "YOUR_WIFI_PASSWORD"
+#define GOOGLE_API_KEY "YOUR_GOOGLE_API_KEY"
+#endif
 
 #define BLYNK_PRINT Serial
 
@@ -33,8 +41,8 @@
 #include "scaler_config.h"
 
 // ==================== WIFI CONFIG ====================
-char ssid[] = "iPhone de Nour nejia";
-char pass[] = "inafff123";
+const char* ssid = WIFI_SSID;
+const char* pass = WIFI_PASS;
 
 // ==================== PINS CONFIG ====================
 // MPU6050
@@ -50,7 +58,7 @@ char pass[] = "inafff123";
 #define BUTTON_PIN 7
 
 // ==================== GOOGLE GEOLOCATION API ====================
-const char* GOOGLE_API_KEY = "AIzaSyAZ7-I4Gc6PNvgEh4c9IffdKsdAGtjrtic";
+const char* googleApiKey = GOOGLE_API_KEY;
 
 // Coordonnées de secours
 const float FALLBACK_LATITUDE = 36.843583;
@@ -106,7 +114,7 @@ String alertMessageFall = "CHUTE DETECTEE! La personne est peut-etre en danger. 
 // SETUP
 // ============================================================
 void setup() {
- 
+  Serial.begin(115200);
   delay(1000);
 
 
@@ -146,7 +154,6 @@ void setup() {
   // Lire l'état initial du bouton
   currentButtonState = digitalRead(BUTTON_PIN);
   lastButtonState = currentButtonState;
-Serial.begin(115200);
   // Système prêt
   systemReady = true;
 
@@ -542,7 +549,7 @@ String getLocation() {
   HTTPClient http;
 
   String url = "https://www.googleapis.com/geolocation/v1/geolocate?key=";
-  url += GOOGLE_API_KEY;
+  url += googleApiKey;
 
   http.begin(url);
   http.addHeader("Content-Type", "application/json");
