@@ -182,7 +182,7 @@ This ensures **continuous operation in all environments**.
 
 ---
 
-## 🚀 Future Improvements
+## Future Improvements
 
 - Miniaturized wearable design
 - Improved mobile application
