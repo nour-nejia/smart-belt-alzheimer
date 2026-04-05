@@ -540,30 +540,27 @@ String getLocation() {
 
   // Envoyer la requête HTTP
   HTTPClient http;
-
   String url = "https://www.googleapis.com/geolocation/v1/geolocate?key=";
   url += GOOGLE_API_KEY;
 
   http.begin(url);
   http.addHeader("Content-Type", "application/json");
   http.setTimeout(15000);
-
   int httpCode = http.POST(requestBody);
-
   String result = "";
-
   if (httpCode == 200) {
     String response = http.getString();
 
     DynamicJsonDocument responseDoc(1024);
     DeserializationError error = deserializeJson(responseDoc, response);
 
-    if (error) {
-      latitude = FALLBACK_LATITUDE;
-      longitude = FALLBACK_LONGITUDE;
-      accuracy = 100.0;
-      googleMapsLink = FALLBACK_LINK;
-      result = FALLBACK_LINK;
+    if (error) { 
+      enableGPS()
+      String location = "";
+      if (gps.location.isValid()) {
+      result= "Lat: " + String(gps.location.lat(), 6) + 
+               " Lng: " + String(gps.location.lng(), 6);
+  } 
     } else {
       latitude = responseDoc["location"]["lat"];
       longitude = responseDoc["location"]["lng"];
@@ -578,18 +575,19 @@ String getLocation() {
       result = googleMapsLink;
     }
   } else {
-    latitude = FALLBACK_LATITUDE;
-    longitude = FALLBACK_LONGITUDE;
-    accuracy = 100.0;
-    googleMapsLink = FALLBACK_LINK;
-    result = FALLBACK_LINK;
+     enableGPS()
+      String location = "";
+      if (gps.location.isValid()) {
+      result= "Lat: " + String(gps.location.lat(), 6) + 
+               " Lng: " + String(gps.location.lng(), 6);
+  } 
   }
 
   http.end();
   WiFi.scanDelete();
 
   return result;
-}
+ }
 
 // ============================================================
 // BLYNK HANDLERS

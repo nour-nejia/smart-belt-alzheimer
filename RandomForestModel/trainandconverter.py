@@ -11,16 +11,16 @@ from sklearn.metrics import classification_report, accuracy_score
 import emlearn
 import os
 
-FOLDER_PATH = r"C:\Users\yassi\OneDrive\Bureau\ASAP"
+FOLDER_PATH = r"C:\Users\MSI\Desktop\Nour_Nejia\projets\smartdevice_project\RandomForestModel"
 
-print("📂 Chargement...")
+print("Chargement...")
 df = pd.read_parquet(os.path.join(FOLDER_PATH, "dataset_merged.parquet"))
-print(f"✅ {len(df):,} lignes")
+print(f" {len(df):,} lignes")
 
 # =============================================================
-# 🔧 FEATURE ENGINEERING - Ajouter des features discriminantes
+#  FEATURE ENGINEERING - Ajouter des features discriminantes
 # =============================================================
-print("\n🔧 Feature Engineering...")
+print("\n Feature Engineering...")
 
 # Magnitude de l'accélération
 df['acc_mag'] = np.sqrt(df['ax']**2 + df['ay']**2 + df['az']**2)
@@ -31,10 +31,10 @@ df['gyro_mag'] = np.sqrt(df['gx']**2 + df['gy']**2 + df['gz']**2)
 # Ratio accélération
 df['acc_ratio'] = df['ax'] / (df['ay']. abs() + 1)
 
-print("✅ Features ajoutées")
+print(" Features ajoutées")
 
 # =============================================================
-# 📊 PRÉPARER LES DONNÉES
+# PRÉPARER LES DONNÉES
 # =============================================================
 features = ['ax', 'ay', 'az', 'gx', 'gy', 'gz', 'age', 'acc_mag', 'gyro_mag', 'acc_ratio']
 X = df[features]. values
@@ -48,12 +48,12 @@ scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
-print(f"✅ Train:  {len(X_train):,} | Test: {len(X_test):,}")
+print(f"Train:  {len(X_train):,} | Test: {len(X_test):,}")
 
 # =============================================================
-# 🌲 ENTRAÎNER MODÈLE
+#  ENTRAÎNER MODÈLE
 # =============================================================
-print("\n🌲 Entraînement Random Forest...")
+print("\n Entraînement Random Forest...")
 
 model = RandomForestClassifier(
     n_estimators=30,
@@ -69,21 +69,21 @@ model.fit(X_train, y_train)
 y_pred = model.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 
-print(f"\n🎯 ACCURACY: {accuracy * 100:.2f}%")
+print(f"\n ACCURACY: {accuracy * 100:.2f}%")
 print(classification_report(y_test, y_pred, target_names=['Idle', 'Walking', 'Falling']))
 
 # =============================================================
-# 🔄 CONVERTIR EN C
+#  CONVERTIR EN C
 # =============================================================
-print("\n🔄 Conversion en C...")
+print("\n Conversion en C...")
 
 cmodel = emlearn.convert(model, method='inline')
 cmodel.save(file=os.path.join(FOLDER_PATH, "fall_detection_model.h"), name='fall_model')
 
 # =============================================================
-# 💾 NOUVEAU SCALER
+# NOUVEAU SCALER
 # =============================================================
-print("💾 Génération scaler...")
+print(" Génération scaler...")
 
 with open(os.path.join(FOLDER_PATH, "scaler_config.h"), "w") as f:
     f.write("#ifndef SCALER_CONFIG_H\n")
@@ -98,6 +98,6 @@ with open(os.path.join(FOLDER_PATH, "scaler_config.h"), "w") as f:
     f.write("}\n\n")
     f.write("#endif\n")
 
-print("\n✅ FICHIERS GÉNÉRÉS:")
+print("\n FICHIERS GÉNÉRÉS:")
 print("   - fall_detection_model.h")
 print("   - scaler_config.h")
