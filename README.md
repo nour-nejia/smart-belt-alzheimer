@@ -194,12 +194,12 @@ This ensures **continuous operation in all environments**.
 
 ## Contributors
 
-| Name | Role | Email |
-|------|------|------|
-| Nour Nejia Slim |  | nournejia.slim@insat.ucar.tn |
-| Yassine Chouk  | | yassine.chouk@insat.ucar.tn |
-| Sonia Mejri | Developer | sonia.mejri@insat.ucar.tn |
-| Zaineb Kchaou | Developer | zaineb.kchaou@insat.ucar.tn |
+| Name | Email |
+|------|------|
+| Nour Nejia Slim | nournejia.slim@insat.ucar.tn |
+| Yassine Chouk   | yassine.chouk@insat.ucar.tn |
+| Sonia Mejri |sonia.mejri@insat.ucar.tn |
+| Zaineb Kchaou |  zaineb.kchaou@insat.ucar.tn |
 
 
 ##  Impact
